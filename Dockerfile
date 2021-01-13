@@ -7,9 +7,15 @@ LABEL maintainer="Felix Haase <felix.haase@feki.de>"
 ARG JOBBER_VERSION=1.4.4
 ARG DUPLICITY_VERSION=0.8.15
 ARG MEGATOOLS_VERSION=1.10.3
+ARG INFLUXDB_VERSION=1.8.2
+
+RUN addgroup influxdb && \
+        adduser -s /bin/false -G influxdb -S -D influxdb
 
 RUN apk upgrade --update && \
     apk add \
+      autoconf \
+      automake \
       bash \
       tzdata \
       tini \
@@ -20,10 +26,17 @@ RUN apk upgrade --update && \
       wget \
       curl \
       gmp-dev \
-      tzdata \
       openssh \
       openssl \
       ca-certificates \
+      libffi-dev \
+      librsync-dev \
+      libevent-dev \
+      libevent \
+      libressl-dev \
+      libressl \
+      libtirpc-dev \
+      libtool \
       python3-dev \
       gcc \
       glib \
@@ -47,6 +60,7 @@ RUN apk upgrade --update && \
       chardet \
       azure-storage-blob \
       boto3 \
+      boto \
       paramiko \
       pexpect \
       pycrypto \
@@ -65,6 +79,7 @@ RUN apk upgrade --update && \
       automake \
       autoconf \
       build-base \
+      curl \
       curl-dev \
       openssl-dev \
       glib-dev \
@@ -80,6 +95,28 @@ RUN apk upgrade --update && \
     ./configure && \
     make && \
     make install && \
+    #installs added by energy-toolbase
+    #install influx
+    wget https://dl.influxdata.com/influxdb/releases/influxdb-${INFLUXDB_VERSION}-static_linux_amd64.tar.gz && \
+    tar -C . -xzf influxdb-${INFLUXDB_VERSION}-static_linux_amd64.tar.gz && \
+        chmod +x influxdb-*/* && \
+        cp -a influxdb-*/* /usr/bin/ && \
+        rm -rf *.tar.gz* influxdb-*/ && \
+    #install trickle
+    cd /tmp/ && \
+    wget https://github.com/mariusae/trickle/archive/09a1d955c6554eb7e625c99bf96b2d99ec7db3dc.zip && \
+    unzip *.zip && \
+    cd trickle-* && \
+    autoreconf -i && \
+    CFLAGS="-I/usr/include/tirpc -ltirpc" ./configure && \
+    make install-exec-am install-trickleoverloadDATA && \
+    #install redis
+    cd /tmp && \
+    wget http://download.redis.io/redis-stable.tar.gz && \
+    tar xvzf redis-stable.tar.gz && \
+    cd redis-stable && \
+    make && \
+    make install &&\
     # Cleanup
     apk del \
       asciidoc \
@@ -103,6 +140,9 @@ RUN apk upgrade --update && \
         openssl && \
     rm -rf /var/cache/apk/* && rm -rf /tmp/*
 
+RUN apk add --no-cache curl
+
+
 COPY --from=rclone /usr/local/bin/rclone /usr/local/bin/rclone
 COPY --from=docker /usr/local/bin/ /usr/local/bin/
 
@@ -119,6 +159,7 @@ WORKDIR /etc/volumerize
 VOLUME ["/volumerize-cache"]
 COPY imagescripts/ /opt/volumerize/
 COPY scripts/ /etc/volumerize/
+COPY  database_backup.sh /preexecute/backup/
 COPY postexecute/ /postexecute
 ENTRYPOINT ["/sbin/tini","--","/opt/volumerize/docker-entrypoint.sh"]
 CMD ["volumerize"]
