@@ -9,12 +9,14 @@
   #log
  LOGFILE="/preexecute/backup/prescriptbackup.log"
 (
-        status_code=$(curl -w '%{http_code}' influxdb:8086/ping)
-        echo Connection response: "${status_code}"
-        #remove old backup files [Should be stored in cloud already if script fails]
-        rm -f ${dir}*
+        date
+        if [[ ${JOB_ID} -eq 1 ]] || [[ -z  ${JOB_ID} ]]; then
+          status_code=$(curl -w '%{http_code}' influxdb:8086/ping)
+          echo Connection response: "${status_code}"
+          #remove old backup files [Should be stored in cloud already if script fails]
+          rm -f ${dir}*
          #make a docker back up if influx is assumed to be up
-        if [[ ${status_code} -eq 204 ]] ; then
+          if [[ ${status_code} -eq 204 ]] ; then
                 influxd backup -portable -host influxdb:8088 "${dir}"
 
                 #Give permission
@@ -40,21 +42,24 @@
                                 fi
                         fi
                 done
+          fi
         fi
 
 
 	#redis backup
 	#update the backup files
 	#returns an int timestamp
-	lastsave=$(redis-cli -h redis -p 6379 lastsave)
-	recentsave=${lastsave}
-	redis-cli -h redis -p 6379 bgsave
-	while [[ ${lastsave} -eq ${recentsave} ]]; do
- 		recentsave=$(redis-cli -h redis -p 6379 lastsave)
- 		if ! [[ $recentsave =~ $re ]] ; then
-   			echo "error: redis last save ${recentsave}" >&2; exit 1
- 		fi
- 		sleep 1
-	done
-	echo background save finished
+	if [[ ${JOB_ID} -eq 2 ]] || [[ -z  ${JOB_ID} ]]; then
+  	lastsave=$(redis-cli -h redis -p 6379 lastsave)
+	  recentsave=${lastsave}
+	  redis-cli -h redis -p 6379 bgsave
+	  while [[ ${lastsave} -eq ${recentsave} ]]; do
+ 		  recentsave=$(redis-cli -h redis -p 6379 lastsave)
+ 		  if ! [[ $recentsave =~ $re ]] ; then
+   		  	echo "error: redis last save ${recentsave}" >&2; exit 1
+ 		  fi
+ 		  sleep 1
+	  done
+	  echo background save finished
+	fi
 ) >> "${LOGFILE}" 2>&1
