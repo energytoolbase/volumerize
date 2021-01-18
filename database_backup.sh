@@ -4,7 +4,7 @@
  re='^[0-9]+$'
 
  #Influx backup
- dir="/source1/"
+ dir="${VOLUMERIZE_SOURCE1}/"
 
   #log
  LOGFILE="/preexecute/backup/prescriptbackup.log"
