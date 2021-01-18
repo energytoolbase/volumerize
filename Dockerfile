@@ -127,6 +127,13 @@ RUN apk upgrade --update && \
       curl-dev \
       glib-dev \
       wget \
+      libffi-dev \
+      librsync-dev \
+      libevent-dev \
+      libevent \
+      libressl-dev \
+      libressl \
+      libtool \
       python3-dev \
       openssl-dev \
       libtool \
