@@ -136,12 +136,10 @@ RUN apk upgrade --update && \
       libtool \
       python3-dev \
       openssl-dev \
-      libtool \
       alpine-sdk \
       linux-headers \
       gcc \
       musl-dev \
-      librsync-dev \
       make && \
     apk add \
         openssl && \
