@@ -4,7 +4,7 @@ set -o errexit
 
 source /opt/volumerize/env.sh
 
-DUPLICITY_COMMAND="duplicity"
+DUPLICITY_COMMAND="trickle -s -u ${UPLOAD} -d ${DOWNLOAD} duplicity"
 
 DUPLICITY_OPTIONS=""
 
@@ -31,6 +31,7 @@ VOLUMERIZE_JOB_SOURCE=
 VOLUMERIZE_JOB_TARGET=
 VOLUMERIZE_JOB_INCLUDES=
 VOLUMERIZE_JOB_EXCLUDES=
+VOLUMERIZE_JOB_ID=$(cat /etc/hostname)
 
 function prepareJobCommand() {
   local jobNumber=$1
@@ -75,7 +76,7 @@ function prepareJobConfiguration() {
 
   file_env ${VARIABLE_TARGET}
   if [ -n "${!VARIABLE_TARGET}" ]; then
-    VOLUMERIZE_JOB_TARGET=${!VARIABLE_TARGET}
+    VOLUMERIZE_JOB_TARGET=${!VARIABLE_TARGET}${VOLUMERIZE_JOB_ID}
   else
     VOLUMERIZE_JOB_TARGET=
   fi
