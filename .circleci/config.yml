@@ -10,10 +10,10 @@ version: 2.1
 jobs:
   check-test:
     <<: *defaults
-      steps:
-        - run:
-          - name: Blank
-            command: |
+    steps:
+      - run:
+        - name: Blank
+          command: |
 
 commands:
   install_deps:
