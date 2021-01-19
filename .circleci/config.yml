@@ -64,8 +64,6 @@ workflows:
           requires:
             - check-test
           filters:
-            tags:
-              only: master
             branches:
               only:
                 - master
