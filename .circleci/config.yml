@@ -51,7 +51,7 @@ workflows:
           region: AWS_DEFAULT_REGION
           dockerfile: Dockerfile
           path: .
-          tag: '$CIRCLE_TAG,$CIRCLE_SHA1'
+          tag: 'master,latest'
           filters:
             branches:
               only:
