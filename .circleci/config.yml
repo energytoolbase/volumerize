@@ -12,16 +12,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - pip-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-      - run:
-          name: Install Pip Dependencies
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
-            pip install -r requirements-dev.txt
       - save_cache:
           paths:
             - ./venv
