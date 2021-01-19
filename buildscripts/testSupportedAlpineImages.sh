@@ -6,7 +6,7 @@ set -o errexit    # abort script at first error
 readonly CUR_DIR=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 source $CUR_DIR/release.sh
 source $CUR_DIR/testImage.sh
-rm /preexecute/backup/database_backup.sh
+docker exec fekide/volumerize rm /preexecute/backup/database_backup.sh
 printf '%b\n' ":: Testing default image...."
 release
 testImage $IMAGE_TAG
