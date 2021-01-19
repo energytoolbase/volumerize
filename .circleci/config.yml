@@ -9,9 +9,11 @@ orbs:
 version: 2.1
 jobs:
   check-test:
-    - name: Blank
-      Command: |
-        
+    <<: *defaults
+      steps:
+      - name: Blank
+        Command: |
+
 commands:
   install_deps:
     description: "Install Dependencies"
