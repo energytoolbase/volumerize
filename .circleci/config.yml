@@ -13,12 +13,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Lint
-          command: |
-            . venv/bin/activate
-            # flake8 src/
-            black -l 120 --check src/
-      - run:
           name: Test
           command: |
             . venv/bin/activate
