@@ -65,7 +65,7 @@ workflows:
             - check-test
           filters:
             tags:
-              only: /^.*/
+              only: master
             branches:
               only:
                 - master
