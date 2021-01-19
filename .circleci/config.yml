@@ -11,6 +11,7 @@ jobs:
   check-test:
     <<: *defaults
     steps:
+      - checkout
       - run:
         - name: Blank
           command: |
