@@ -12,9 +12,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run:
-        - name: Blank
-          command: |
 
 commands:
   install_deps:
