@@ -11,8 +11,9 @@ jobs:
   check-test:
     <<: *defaults
       steps:
-      - name: Blank
-        Command: |
+        - run:
+          - name: Blank
+            command: |
 
 commands:
   install_deps:
