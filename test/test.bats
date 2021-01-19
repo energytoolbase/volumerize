@@ -9,6 +9,7 @@ setup_file() {
   export COMPOSE_DIRECTORY=${BATS_TEST_DIRNAME}/compose-files
   export COMPOSE_FILE=${COMPOSE_DIRECTORY}/${TEST_IMAGE_TYPE:-default}.yml
   docker-compose --no-ansi up -d
+  docker exec volumerize rm /preexecute/backup/database_backup.sh
   if [ $TEST_IMAGE_TYPE == mysql ]; then
     # Wait for database initialisation
     wait_until_running mariadb 120 "MySQL init process done. Ready for start up." "mysqld: ready for connections."
