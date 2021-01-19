@@ -12,11 +12,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - save_cache:
-          paths:
-            - ./venv
-          key: pip-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-
       - run:
           name: Lint
           command: |
