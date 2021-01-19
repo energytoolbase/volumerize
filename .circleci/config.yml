@@ -36,14 +36,10 @@ commands:
           path: report
       - store_test_results:
           path: report
-          
+
 workflows:
   check-test-push-deploy:
     jobs:
-      - check-test:
-          filters:
-            tags:
-              only: /.*/
       - aws-ecr/build-and-push-image:
           # This needs to be configured for the build to work
           repo: etb/acumen-backup
