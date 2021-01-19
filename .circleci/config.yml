@@ -40,7 +40,7 @@ commands:
 workflows:
   check-test-push-deploy:
     jobs:
-      -build_master:
+      - build_master:
         machine:
           image: ubuntu-1604:202007-01
         steps:
