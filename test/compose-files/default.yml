@@ -2,12 +2,13 @@ version: '3.7'
 
 services:
   volumerize:
-    image: fekide/volumerize:${TEST_IMAGE_TAG}
+    image: 976401372843.dkr.ecr.us-west-2.amazonaws.com/etb/acumen-backup:${TEST_IMAGE_TAG}
     container_name: volumerize
     volumes:
       - source_volume:/source
       - backup_volume:/backup
       - cache_volume:/volumerize-cache
+      - ./host:/etc/hostname
     environment:
       - DEBUG=true
       - VOLUMERIZE_SOURCE=/source

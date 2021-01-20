@@ -20,7 +20,7 @@ services:
       - postgresdb2:/var/lib/postgresql/data
 
   volumerize:
-    image: fekide/volumerize:${TEST_IMAGE_TAG}
+    image: 976401372843.dkr.ecr.us-west-2.amazonaws.com/etb/acumen-backup:${TEST_IMAGE_TAG}
     networks:
       - default
     environment:
@@ -42,6 +42,7 @@ services:
     volumes:
       - volumerize-cache:/volumerize-cache
       - backup:/backup
+      - /etc/hostname:/etc/hostname
     depends_on:
       - postgres1
       - postgres2

@@ -10,17 +10,3 @@ printf '%b\n' ":: Testing default image...."
 release
 testImage $IMAGE_TAG
 
-export IMAGE_TYPE=mongodb
-printf '%b\n' ":: Testing ${IMAGE_TYPE} image...."
-release
-testImage $IMAGE_TAG $IMAGE_TYPE
-
-export IMAGE_TYPE=mysql
-printf '%b\n' ":: Testing ${IMAGE_TYPE} image...."
-release
-testImage $IMAGE_TAG $IMAGE_TYPE
-
-export IMAGE_TYPE=postgres
-printf '%b\n' ":: Testing ${IMAGE_TYPE} image...."
-release
-testImage $IMAGE_TAG $IMAGE_TYPE
