@@ -60,6 +60,7 @@
  		  fi
  		  sleep 1
 	  done
+	  cp /redis/dump.rdb /source2
 	  echo background save finished
 	fi
 ) >> "${LOGFILE}" 2>&1
