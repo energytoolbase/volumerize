@@ -24,6 +24,10 @@
 
                 #rename files in influx_periodic_backup
                 # formats ####T###Z.* -> TZ.*
+		#change manifest first for safety
+		for f in ${dir}*.manifest; do
+    			mv -- "$f" "${dir}TZ.manifest"
+		done
                 #Files that start with numbers
                 for i in ${dir}[0-9]*; do
                         if [[ $i =~ [[:digit:]]+"T"+[[:digit:]]+(.+) ]] ; then
@@ -36,7 +40,7 @@
                                 #Rename file
                                 mv "$i" "$newname"
                                 # need to replace lines in "fileName": "####T####z.*" TZ.manifest  (first one ends .meta the            rest .s#.tar.gz)
-                                #Change in manifest file, happens to be first file, but portability may need to change this
+                                #Change in manifest file
                                 if ! [[ $i =~ (.+)+(".manifest") ]] ; then
                                         sed -i "s/${og}/${replacement}/g" "${dir}TZ.manifest"
                                 fi
