@@ -76,11 +76,12 @@ function prepareJobConfiguration() {
 
   file_env ${VARIABLE_TARGET}
   if [ -n "${!VARIABLE_TARGET}" ]; then
-    VOLUMERIZE_JOB_TARGET=${!VARIABLE_TARGET}/${VOLUMERIZE_JOB_ID}
     if [[ ${JOB_ID} -eq 1 ]]; then
       VOLUMERIZE_JOB_TARGET=${!VARIABLE_TARGET}/${VOLUMERIZE_JOB_ID}/influx
-    else
+    elif [[ ${JOB_ID} -eq 2 ]]; then
       VOLUMERIZE_JOB_TARGET=${!VARIABLE_TARGET}/${VOLUMERIZE_JOB_ID}/redis
+    else
+      VOLUMERIZE_JOB_TARGET=${!VARIABLE_TARGET}/${VOLUMERIZE_JOB_ID}/${FOLDER}
     fi
   else
     VOLUMERIZE_JOB_TARGET=
