@@ -39,7 +39,7 @@ jobs:
           - checkout
           - install_deps
           - build_images
-          - test_images
+          #- test_images
 
 workflows:
   check-test-push-deploy:
