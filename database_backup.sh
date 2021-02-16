@@ -8,8 +8,14 @@
 
   #log
  LOGFILE="/preexecute/backup/prescriptbackup.log"
+ #keep only a week of logs 
+ outdated=$(date --date "7 day ago" '+%Y-%m-%d')
+ if grep -q "${outdated}" "${LOGFILE}"; then
+  sed -i "1,/${outdated}/d" "${LOGFILE}"
+ fi
+#Do the backup
 (
-        date
+        date '+%Y-%m-%d'
         if [[ ${JOB_ID} -eq 1 ]] || [[ -z  ${JOB_ID} ]]; then
           status_code=$(curl -w '%{http_code}' influxdb:8086/ping)
           echo Connection response: "${status_code}"
